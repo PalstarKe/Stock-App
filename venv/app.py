@@ -1,19 +1,9 @@
-from flask import Flask
-import os
-import requests
 
+from flask import Flask, jsonify
+import gdown
 app = Flask(__name__)
 
-@app.route("/run_colab")
+@app.route('/run-colab')
 def run_colab():
-    # Request to run the Colab notebook
-    response = requests.post(
-        "https://colab.research.google.com/drive/1M9hoHHARndOijRPKT1TTwMEEvb2Nd_e-?usp=sharing",
-        headers={
-            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-        }
-    )
-    return "Colab notebook run status: {}".format(response.status_code)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    gdown.download('https://drive.google.com/drive/folders/1OaXMnvd7xwSgFaoE4uUQ6IRilRHAxChC', 'colab.ipynb', quiet=False)
+    return jsonify(message='colab notebook ran successfully')
